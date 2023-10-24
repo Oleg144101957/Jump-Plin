@@ -10,5 +10,4 @@ class CollectTrackDataUseCase(private val adbProvider: AdbProvider) {
         Log.d("123123", "Data is $adbData")
 
     }
-
 }
