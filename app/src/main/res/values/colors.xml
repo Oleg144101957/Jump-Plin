@@ -3,4 +3,5 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="whiteplin">#EDEDED</color>
+    <color name="greyplin">#808080</color>
 </resources>

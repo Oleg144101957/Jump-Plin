@@ -23,9 +23,7 @@ class UnoActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         collectTrackDataUseCase.getDataFromAllSources()
-
         goToTheNextMenuActivity()
-
     }
 
     private fun goToTheNextMenuActivity() {
