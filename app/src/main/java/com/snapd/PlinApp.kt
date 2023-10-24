@@ -3,7 +3,6 @@ package com.snapd
 import android.app.Application
 import com.snapd.di.dataModule
 import com.snapd.di.domainModule
-import com.snapd.di.presentationModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -17,7 +16,7 @@ class PlinApp : Application() {
         startKoin {
             androidLogger(level = Level.ERROR)
             androidContext(this@PlinApp)
-            modules(listOf(domainModule, dataModule, presentationModule))
+            modules(listOf(domainModule, dataModule))
         }
     }
 }
