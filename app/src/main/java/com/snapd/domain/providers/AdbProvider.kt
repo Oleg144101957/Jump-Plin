@@ -1,7 +1,9 @@
 package com.snapd.domain.providers
 
-interface AdbProvider {
+import com.snapd.domain.models.TrackState
+import kotlinx.coroutines.flow.MutableStateFlow
 
-    fun provideAdb() : String
+interface AdbProvider {
+    fun provideAdb(liveTrackState: MutableStateFlow<TrackState>)
 
 }

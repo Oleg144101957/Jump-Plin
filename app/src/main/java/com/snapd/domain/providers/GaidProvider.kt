@@ -1,7 +1,9 @@
 package com.snapd.domain.providers
 
-interface GaidProvider {
+import com.snapd.domain.models.TrackState
+import kotlinx.coroutines.flow.MutableStateFlow
 
-    suspend fun provideGaid() : String
+interface GaidProvider {
+    suspend fun provideGaid(liveTrackState: MutableStateFlow<TrackState>)
 
 }

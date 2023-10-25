@@ -52,5 +52,8 @@ dependencies {
     implementation "io.insert-koin:koin-core:$koin_ver"
     implementation "io.insert-koin:koin-android:$koin_ver"
     api 'com.android.installreferrer:installreferrer:2.2'
+    implementation 'com.facebook.android:facebook-android-sdk:15.2.0'
+
+
 
 }

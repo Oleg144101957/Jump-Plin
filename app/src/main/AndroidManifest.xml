@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 
     <application
         android:name=".PlinApp"
@@ -41,6 +43,20 @@
             android:theme="@style/Theme.JumpPlin"
             android:screenOrientation="portrait"
             android:exported="false"/>
+
+        <activity
+            android:name=".presantation.TresActivity"
+            android:theme="@style/Theme.JumpPlin"
+            android:screenOrientation="portrait"
+            android:exported="false"/>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fid" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ClientToken"
+            android:value="@string/ftoken" />
 
     </application>
 
