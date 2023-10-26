@@ -64,7 +64,6 @@ class TresActivity : AppCompatActivity() {
         binding.root.addView(policyScreen)
         setBackClicks(policyScreen)
 
-
         if (applicationStorage.getDestination() == EMPTY_DESTINATION){
             val gaid = intent.getStringExtra(GAID) ?: NO_DATA
             val adb = intent.getStringExtra(ADB)
