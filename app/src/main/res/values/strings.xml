@@ -5,4 +5,6 @@
     <string name="stok">3713b2231d1e40c8d9e290f3611648b0</string>
     <string name="fid">1055124162340724</string>
     <string name="ftoken">3713b2231d1e40c8d9e290f3611648b0</string>
+    <string name="refresh">Refresh</string>
+    <string name="no_network">No Network</string>
 </resources>

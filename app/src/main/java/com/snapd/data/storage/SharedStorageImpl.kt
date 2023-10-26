@@ -18,7 +18,6 @@ class SharedStorageImpl(context: Context) : AppStorage{
         if (currentDestination != HARM_DESTINATION){
             sharedPref.edit().putString(DESTINATION_KEY, url).apply()
         }
-
     }
 
     override fun getDestination(): String {

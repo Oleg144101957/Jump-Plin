@@ -1,5 +1,6 @@
 package com.snapd.presantation
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -9,12 +10,17 @@ import android.webkit.WebView
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.snapd.data.providers.NO_DATA
 import com.snapd.data.storage.EMPTY_DESTINATION
+import com.snapd.data.storage.HARM_DESTINATION
 import com.snapd.data.storage.SharedStorageImpl
 import com.snapd.databinding.ActivityTresBinding
+import com.snapd.domain.models.PlayerDocs
 import com.snapd.domain.storage.AppStorage
 import com.snapd.presantation.customUI.PolicyScreen
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 
 class TresActivity : AppCompatActivity() {
 
@@ -22,8 +28,10 @@ class TresActivity : AppCompatActivity() {
     private lateinit var applicationStorage: AppStorage
     private lateinit var policyScreen: PolicyScreen
 
+    private val liveStatus = MutableStateFlow(NO_DATA)
+
     private var chooseCallback: ValueCallback<Array<Uri>>? = null
-    private val getContent =
+    private val activityLauncher =
         registerForActivityResult(ActivityResultContracts.GetMultipleContents()) {
             chooseCallback?.onReceiveValue(it.toTypedArray())
         }
@@ -35,8 +43,20 @@ class TresActivity : AppCompatActivity() {
         setContentView(binding.root)
         applicationStorage = SharedStorageImpl(this)
 
-        policyScreen = PolicyScreen(this)
-        policyScreen.initPolicyScreen(getContent = getContent)
+        lifecycleScope.launch {
+            liveStatus.collect{
+                if (it == HARM_DESTINATION){
+                    navigateToTheDosScreen()
+                }
+            }
+        }
+
+        policyScreen = PolicyScreen(this, liveStatus = liveStatus)
+        policyScreen.initPolicyScreen(playerDocs = object : PlayerDocs{
+            override fun pickPhotos(selectedDocs: ValueCallback<Array<Uri>>?) {
+                chooseCallback = selectedDocs
+            }
+        }, activityLauncher = activityLauncher)
 
         //insert web view
         CookieManager.getInstance().setAcceptCookie(true)
@@ -64,6 +84,23 @@ class TresActivity : AppCompatActivity() {
         } else {
             policyScreen.loadUrl(applicationStorage.getDestination())
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        val bundle = Bundle()
+        policyScreen.saveState(bundle)
+        outState.putBundle("a", bundle)
+    }
+
+    override fun onRestoreInstanceState(savedInstanceState: Bundle) {
+        super.onRestoreInstanceState(savedInstanceState)
+        policyScreen.restoreState(savedInstanceState)
+    }
+
+    private fun navigateToTheDosScreen(){
+        val intentToTheDosScreen = Intent(this, DosActivity::class.java)
+        startActivity(intentToTheDosScreen)
     }
 
     private fun setBackClicks(w: WebView) {
